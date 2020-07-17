@@ -34,12 +34,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace KWin
 {
 
-InvertEffect::InvertEffect()
+  InvertEffect::InvertEffect()
     :   m_inited(false),
         m_valid(true),
         m_shader(nullptr),
         m_allWindows(false)
-{
+  {
     QAction* a = new QAction(this);
     a->setObjectName(QStringLiteral("SmartInvert"));
     a->setText(i18n("Toggle Smart Invert Effect"));
@@ -57,95 +57,116 @@ InvertEffect::InvertEffect()
     connect(b, &QAction::triggered, this, &InvertEffect::toggleWindow);
 
     connect(effects, &EffectsHandler::windowClosed, this, &InvertEffect::slotWindowClosed);
-}
+  }
 
-InvertEffect::~InvertEffect()
-{
+  InvertEffect::~InvertEffect()
+  {
     delete m_shader;
-}
+  }
 
-bool InvertEffect::supported()
-{
+  bool InvertEffect::supported()
+  {
     return effects->compositingType() == OpenGL2Compositing;
-}
+  }
 
-bool InvertEffect::loadData()
-{
+  bool InvertEffect::loadData()
+  {
     m_inited = true;
 
-    m_shader = ShaderManager::instance()->generateShaderFromResources(ShaderTrait::MapTexture, QString(), QStringLiteral("invert.frag"));
-    if (!m_shader->isValid()) {
-        //qCCritical(KWINEFFECTS) << "The shader failed to load!";
-        return false;
+    QString shadersDir(QStringLiteral("kwin/shaders/1.10/"));
+#ifdef KWIN_HAVE_OPENGLES
+    const qint64 coreVersionNumber = kVersionNumber(3, 0);
+#else
+    const qint64 version = KWin::kVersionNumber(1, 40);
+#endif
+    if (KWin::GLPlatform::instance()->glslVersion() >= version)
+      shadersDir = QStringLiteral("kwin/shaders/1.40/");
+
+    const QString fragmentshader = QStandardPaths::locate(QStandardPaths::GenericDataLocation, shadersDir + QStringLiteral("invert.frag"));
+
+
+    QFile file(fragmentshader);
+    if (file.open(QFile::ReadOnly))
+      {
+        QByteArray frag = file.readAll();
+        m_shader = KWin::ShaderManager::instance()->generateCustomShader(KWin::ShaderTrait::MapTexture, QByteArray(), frag);
+        file.close();
+
+        if (!m_shader->isValid()) {
+          //qCCritical(KWINEFFECTS) << "The shader failed to load!";
+          return false;
+        }
+        return true;
+      }
+    else {
+      deleteLater();
+      return false;
     }
+  }
 
-    return true;
-}
-
-void InvertEffect::drawWindow(EffectWindow* w, int mask, const QRegion &region, WindowPaintData& data)
-{
+  void InvertEffect::drawWindow(EffectWindow* w, int mask, const QRegion &region, WindowPaintData& data)
+  {
     // Load if we haven't already
     if (m_valid && !m_inited)
-        m_valid = loadData();
+      m_valid = loadData();
 
     bool useShader = m_valid && (m_allWindows != m_windows.contains(w));
     if (useShader) {
-        ShaderManager *shaderManager = ShaderManager::instance();
-        shaderManager->pushShader(m_shader);
+      ShaderManager *shaderManager = ShaderManager::instance();
+      shaderManager->pushShader(m_shader);
 
-        data.shader = m_shader;
+      data.shader = m_shader;
     }
 
     effects->drawWindow(w, mask, region, data);
 
     if (useShader) {
-        ShaderManager::instance()->popShader();
+      ShaderManager::instance()->popShader();
     }
-}
+  }
 
-void InvertEffect::paintEffectFrame(KWin::EffectFrame* frame, const QRegion &region, double opacity, double frameOpacity)
-{
+  void InvertEffect::paintEffectFrame(KWin::EffectFrame* frame, const QRegion &region, double opacity, double frameOpacity)
+  {
     if (m_valid && m_allWindows) {
-        frame->setShader(m_shader);
-        ShaderBinder binder(m_shader);
-        effects->paintEffectFrame(frame, region, opacity, frameOpacity);
+      frame->setShader(m_shader);
+      ShaderBinder binder(m_shader);
+      effects->paintEffectFrame(frame, region, opacity, frameOpacity);
     } else {
-        effects->paintEffectFrame(frame, region, opacity, frameOpacity);
+      effects->paintEffectFrame(frame, region, opacity, frameOpacity);
     }
-}
+  }
 
-void InvertEffect::slotWindowClosed(EffectWindow* w)
-{
+  void InvertEffect::slotWindowClosed(EffectWindow* w)
+  {
     m_windows.removeOne(w);
-}
+  }
 
-void InvertEffect::toggleScreenInversion()
-{
+  void InvertEffect::toggleScreenInversion()
+  {
     m_allWindows = !m_allWindows;
     effects->addRepaintFull();
-}
+  }
 
-void InvertEffect::toggleWindow()
-{
+  void InvertEffect::toggleWindow()
+  {
     if (!effects->activeWindow()) {
-        return;
+      return;
     }
     if (!m_windows.contains(effects->activeWindow()))
-        m_windows.append(effects->activeWindow());
+      m_windows.append(effects->activeWindow());
     else
-        m_windows.removeOne(effects->activeWindow());
+      m_windows.removeOne(effects->activeWindow());
     effects->activeWindow()->addRepaintFull();
-}
+  }
 
-bool InvertEffect::isActive() const
-{
+  bool InvertEffect::isActive() const
+  {
     return m_valid && (m_allWindows || !m_windows.isEmpty());
-}
+  }
 
-bool InvertEffect::provides(Feature f)
-{
+  bool InvertEffect::provides(Feature f)
+  {
     return f == ScreenInversion;
-}
+  }
 
 } // namespace
-

@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=SmartInvert
-Comment=SmartInvert effect
+Comment=Inverts windows intellgently.
 
 Type=Service
 X-KDE-ServiceTypes=KWin/Effect

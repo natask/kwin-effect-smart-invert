@@ -95,9 +95,7 @@ endif (XCB_FOUND)
 # Effect
 set(kwin_smartInvert_SRCS plugin.cpp invert.cpp)
 
-add_library(${SMARTINVERT} MODULE ${kwin_smartInvert_SRCS})
-
-qt5_add_resources(kwin_smartInvert_SRCS shaders.qrc) # will need to add shader.qrc later will see how kwin does this
+add_library(${SMARTINVERT}  SHARED ${kwin_smartInvert_SRCS})
 
 kcoreaddons_desktop_to_json(${SMARTINVERT} smartInvert.desktop SERVICE_TYPES kwineffect.desktop)
 
@@ -131,6 +129,11 @@ install(
     DESTINATION
         ${PLUGIN_INSTALL_DIR}/kwin/effects/plugins/
 )
+
+execute_process(COMMAND kf5-config --install data OUTPUT_VARIABLE DATAPATH OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+install(FILES data/1.40/invert.frag DESTINATION ${DATAPATH}/kwin/shaders/1.40)
+install(FILES data/1.10/invert.frag DESTINATION ${DATAPATH}/kwin/shaders/1.10)
 
 #######################################
 # Config
@@ -176,4 +179,5 @@ install(
     DESTINATION
         ${PLUGIN_INSTALL_DIR}/kwin/effects/configs
 )
+
 
