@@ -26,11 +26,14 @@ sudo dnf install git cmake gcc-c++ extra-cmake-modules qt5-qttools-devel qt5-qtt
 #+end_src
 ** Building
 #+begin_src bash
-git clone https://github.com/natask/kwin-effect-smartInvert.git
-cd kwin-effect-smartInvert
+git clone https://github.com/natask/kwin-effect-smart-invert.git
+cd kwin-effect-smart-invert
 mkdir -p build && cd build
 cmake .. && make && sudo make install && (kwin_x11 --replace &)
 #+end_src
+
+#+RESULTS:
+
 ** inspirations
 - [[https://github.com/KDE/kwin/tree/master/effects/invert]]
 - [[https://github.com/ugjka/kwin-effect-grayscale]]
