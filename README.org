@@ -48,3 +48,4 @@ cmake .. \
 *** TODO start inverted
 *** TODO what is the difference between SHARED and MODULE in cmake
 *** TODO what is the point of duplicated declarations for keybindings in [[file:invert.cpp]] and [[file:invert_config.cpp]]. 
+*** TODO change internal naming from kwin-effect-smartInvert to kwin-effect-smart-invert
