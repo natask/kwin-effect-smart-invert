@@ -1,0 +1,6 @@
+# Hashes of file build rules.
+c9ae181d9cc07284ebda51137652066f CMakeFiles/fetch-translations
+f14a6d9b81b7ee82095896a6c2254165 CMakeFiles/kwin4_effect_smartInvert_autogen
+32eeb369b135c0ac166c179ac2cbaab0 CMakeFiles/uninstall
+5a2bf0942655fa07325a37e9cf8802fa invert_config.json
+c6386c2224a4110d3400cc841dd91827 releaseme
