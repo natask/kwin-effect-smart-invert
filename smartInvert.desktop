@@ -1,0 +1,14 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=SmartInvert
+Comment=SmartInvert effect
+
+Type=Service
+X-KDE-ServiceTypes=KWin/Effect
+X-KDE-PluginInfo-Author=savnk
+X-KDE-PluginInfo-Email=thisnkk@gmail.com
+X-KDE-PluginInfo-Name=kwin_effect_smartInvert
+X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-Category=Appearance
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=True

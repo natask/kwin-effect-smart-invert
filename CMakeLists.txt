@@ -1,11 +1,14 @@
 cmake_minimum_required(VERSION 3.0)
 
-set(SMARTINVERT kwin4_effect_smartInvert)
+set(SMARTINVERT kwin_effect_smartInvert)
 
 project(${SMARTINVERT})
 
 set(QT_MIN_VERSION "5.4.0")
 set(KF5_MIN_VERSION "5.9.0")
+
+
+cmake_policy(SET CMP0054 NEW)
 
 find_package(ECM REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
@@ -90,38 +93,13 @@ endif (XCB_FOUND)
 
 #######################################
 # Effect
-#######################################
-# Config
-set(kwin_invert_config_SRCS invert.cpp invert_config.cpp)
+set(kwin_smartInvert_SRCS invert.cpp)
 
-add_library(${SMARTINVERT} MODULE ${kwin_invert_config_SRCS})
+add_library(${SMARTINVERT} MODULE ${kwin_smartInvert_SRCS})
 
-qt5_add_resources(${SMARTINVERT} shaders.qrc)
+qt5_add_resources(${SMARTINVERT} shaders.qrc) # will need to add shader.qrc later will see how kwin does this
 
-kcoreaddons_desktop_to_json(${SMARTINVERT} invert_config.desktop SERVICE_TYPES kcmodule.desktop)
-
-#######################################
-# Effect
-# Gray
-#######################################
-# Config
-# add_subdirectory( kcm )
-# set(kwin_effect_grayscale_SRCS plugin.cpp GrayscaleEffect.cpp)
-# qt5_add_resources(kwin_effect_grayscale_SRCS shaders.qrc)
-# add_library(kwin_effect_grayscale SHARED ${kwin_effect_grayscale_SRCS})
-
-#  kcoreaddons_desktop_to_json(kwin_effect_grayscale grayscale.desktop SERVICE_TYPES kwineffect.desktop)
-
-install(
-    TARGETS
-    ${SMARTINVERT}
-    DESTINATION
-        ${PLUGIN_INSTALL_DIR}/kwin/effects/plugins/
-)
-
-
-# for other file, smart invert
-# add_library(${SMARTINVERT} MODULE smartInvert.cpp)
+kcoreaddons_desktop_to_json(${SMARTINVERT} smartInvert.desktop SERVICE_TYPES kwineffect.desktop)
 
 target_link_libraries(${SMARTINVERT}
     PUBLIC
@@ -143,13 +121,79 @@ target_link_libraries(${SMARTINVERT}
         KF5::GlobalAccel
         KF5::I18n
         KF5::XmlGui
-        KWinEffectsInterface
-
         KF5::Service
         #KWinEffects::KWinEffects
         )
 
-# #kcoreaddons_desktop_to_json(${SMARTINVERT} smartInvert.desktop)
+install(
+    TARGETS
+    ${SMARTINVERT}
+    DESTINATION
+        ${PLUGIN_INSTALL_DIR}/kwin/effects/plugins/
+)
+
+#######################################
+# Config
+find_package (Qt5 REQUIRED COMPONENTS
+    Core
+    DBus
+)
+
+find_package (KF5 REQUIRED COMPONENTS
+    ConfigWidgets
+    GlobalAccel
+    I18n
+    Service
+    XmlGui
+)
+
+set(SMARTINVERTCONFIG kwin_smartInvert_config)
+set(kwin_smartInvert_config_SRCS invert_config.cpp)
+
+qt5_add_dbus_interface(kwin_smartInvert_config_SRCS dbus.xml kwineffects_interface)
+
+add_library(kwin_smartInvert_config MODULE ${kwin_invert_config_SRCS})
+
+target_link_libraries(${SMARTINVERTCONFIG}
+    Qt5::Core
+    Qt5::DBus
+    KF5::ConfigWidgets
+    KF5::GlobalAccel
+    KF5::I18n
+    KF5::Service
+    KF5::XmlGui
+    KF5::ConfigWidgets
+    KF5::GlobalAccel
+    KF5::I18n
+    KF5::XmlGui
+)
+
+kcoreaddons_desktop_to_json(${SMARTINVERTCONFIG}  smartInvert_config.desktop SERVICE_TYPES kcmodule.desktop)
+
+install(
+    TARGETS
+        ${SMARTINVERTCONFIG}
+    DESTINATION
+        ${PLUGIN_INSTALL_DIR}/kwin/effects/configs
+)
+
+#######################################
+# Effect
+# Gray
+#######################################
+# Config
+# add_subdirectory( kcm )
+# set(kwin_effect_grayscale_SRCS plugin.cpp GrayscaleEffect.cpp)
+# qt5_add_resources(kwin_effect_grayscale_SRCS shaders.qrc)
+# add_library(kwin_effect_grayscale SHARED ${kwin_effect_grayscale_SRCS})
+
+#  kcoreaddons_desktop_to_json(kwin_effect_grayscale grayscale.desktop SERVICE_TYPES kwineffect.desktop)
+
+
+
+# for other file, smart invert
+# add_library(${SMARTINVERT} MODULE smartInvert.cpp)
+
 
 # install(TARGETS ${SMARTINVERT} DESTINATION ${MODULEPATH}/kwin/effects/plugins)
 # # execute_process(COMMAND kf5-config --install services OUTPUT_VARIABLE SERVICEPATH OUTPUT_STRIP_TRAILING_WHITESPACE)

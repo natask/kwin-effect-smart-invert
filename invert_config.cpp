@@ -33,14 +33,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QVBoxLayout>
 
 K_PLUGIN_FACTORY_WITH_JSON(InvertEffectConfigFactory,
-                           "invert_config.json",
+                           "smartInvert_config.json",
                            registerPlugin<KWin::InvertEffectConfig>();)
 
 namespace KWin
 {
 
 InvertEffectConfig::InvertEffectConfig(QWidget* parent, const QVariantList& args) :
-    KCModule(KAboutData::pluginData(QStringLiteral("invert")), parent, args)
+    KCModule(KAboutData::pluginData(QStringLiteral("smartInvert")), parent, args)
 {
     QVBoxLayout* layout = new QVBoxLayout(this);
 
@@ -48,14 +48,14 @@ InvertEffectConfig::InvertEffectConfig(QWidget* parent, const QVariantList& args
     KActionCollection *actionCollection = new KActionCollection(this, QStringLiteral("kwin"));
     actionCollection->setComponentDisplayName(i18n("KWin"));
 
-    QAction* a = actionCollection->addAction(QStringLiteral("Invert"));
-    a->setText(i18n("Toggle Invert Effect"));
+    QAction* a = actionCollection->addAction(QStringLiteral("SmartInvert"));
+    a->setText(i18n("Toggle SmartInvert Effect"));
     a->setProperty("isConfigurationAction", true);
     KGlobalAccel::self()->setDefaultShortcut(a, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_I);
     KGlobalAccel::self()->setShortcut(a, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_I);
 
-    QAction* b = actionCollection->addAction(QStringLiteral("InvertWindow"));
-    b->setText(i18n("Toggle Invert Effect on Window"));
+    QAction* b = actionCollection->addAction(QStringLiteral("SmartInvertWindow"));
+    b->setText(i18n("Toggle SmartInvert Effect on Window"));
     b->setProperty("isConfigurationAction", true);
     KGlobalAccel::self()->setDefaultShortcut(b, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_U);
     KGlobalAccel::self()->setShortcut(b, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_U);
