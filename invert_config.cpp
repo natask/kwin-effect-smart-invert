@@ -49,10 +49,10 @@ InvertEffectConfig::InvertEffectConfig(QWidget* parent, const QVariantList& args
     actionCollection->setComponentDisplayName(i18n("KWin"));
 
     QAction* a = actionCollection->addAction(QStringLiteral("SmartInvert"));
-    a->setText(i18n("Toggle SmartInvert Effect"));
+    a->setText(i18n("Toggle SmartInvert Effect on all Windows"));
     a->setProperty("isConfigurationAction", true);
-    KGlobalAccel::self()->setDefaultShortcut(a, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_R);
-    KGlobalAccel::self()->setShortcut(a, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_R);
+    KGlobalAccel::self()->setDefaultShortcut(a, QList<QKeySequence>() << Qt::SHIFT +  Qt::CTRL + Qt::META + Qt::Key_R);
+    KGlobalAccel::self()->setShortcut(a, QList<QKeySequence>() <<Qt::SHIFT +  Qt::CTRL + Qt::META + Qt::Key_R);
 
     QAction* b = actionCollection->addAction(QStringLiteral("SmartInvertWindow"));
     b->setText(i18n("Toggle SmartInvert Effect on Window"));

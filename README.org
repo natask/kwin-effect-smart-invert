@@ -1,0 +1,50 @@
+* Kwin effect smart invert
+Intelligently inverts windows by applying a shader that preserves colors other than black and white By Default. Exactly like the default invert [[https://github.com/KDE/kwin/tree/master/effects/invert][plugin]] provided by KDE except it allows custom shaders.
+** Custom shaders
+Shader files can be set in =/usr/share/kwin/shaders/1.40=. The file with name =invert.frag= will be selected.
+** Default Shortcuts
+- inverting the entire screen ::
+=SHIFT + CTRL + META + R=  
+- inverting the current window ::
+=CTRL + META + R= 
+
+You can change the shortcuts via System Settings -> Global Keyboard Shortcuts -> KWin
+Or directly from the kwin effects settings menu.
+** Dependencies
+I haven't tested these dependencies. refer to [[https://github.com/ugjka/kwin-,ileffect-grayscale][this]] and [[https://github.com/alex47/KDE-Rounded-Corners][this]] repos.
+- Arch based ::
+You need extra-cmake-modules, kwin and kf5 *-dev packages installed
+- Debian based (Ubuntu, Kubuntu, KDE Neon) ::
+#+begin_src bash
+sudo apt install git cmake g++ gettext extra-cmake-modules qttools5-dev libqt5x11extras5-dev libkf5configwidgets-dev libkf5crash-dev libkf5globalaccel-dev libkf5kio-dev libkf5notifications-dev kinit-dev kwin-dev 
+#+end_src
+- Fedora based ::
+#+begin_src bash
+
+sudo dnf install git cmake gcc-c++ extra-cmake-modules qt5-qttools-devel qt5-qttools-static qt5-qtx11extras-devel kf5-kconfigwidgets-devel kf5-kcrash-devel kf5-kguiaddons-devel kf5-kglobalaccel-devel kf5-kio-devel kf5-ki18n-devel kf5-knotifications-devel kf5-kinit-devel kwin-devel qt5-qtbase-devel libepoxy-devel
+
+#+end_src
+** Building
+#+begin_src bash
+git clone https://github.com/natask/kwin-effect-smartInvert.git
+cd kwin-effect-smartInvert
+mkdir -p build && cd build
+cmake .. \
+        -DCMAKE_C_FLAGS:STRING="" \
+        -DCMAKE_CXX_FLAGS:STRING="" \
+        -DCMAKE_EXE_LINKER_FLAGS:STRING="" \
+        -DCMAKE_SHARED_LINKER_FLAGS:STRING="" \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_INSTALL_LIBDIR=lib  && make && sudo make install && (kwin_x11 --replace &)
+#+end_src
+** inspirations
+- [[https://github.com/KDE/kwin/tree/master/effects/invert]]
+- [[https://github.com/ugjka/kwin-effect-grayscale]]
+- [[https://www.reddit.com/r/kde/comments/hscf6f/attempting_to_write_smart_inversion_effect_for_kde/]]
+- [[https://github.com/alex47/KDE-Rounded-Corners]]
+
+** TODOs
+*** TODO plugin breaks when started on by default
+*** TODO start inverted
+*** TODO what is the difference between SHARED and MODULE in cmake
+*** TODO what is the point of duplicated declarations for keybindings in [[file:invert.cpp]] and [[file:invert_config.cpp]]. 
