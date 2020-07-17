@@ -93,11 +93,11 @@ endif (XCB_FOUND)
 
 #######################################
 # Effect
-set(kwin_smartInvert_SRCS invert.cpp)
+set(kwin_smartInvert_SRCS plugin.cpp invert.cpp)
 
 add_library(${SMARTINVERT} MODULE ${kwin_smartInvert_SRCS})
 
-qt5_add_resources(${SMARTINVERT} shaders.qrc) # will need to add shader.qrc later will see how kwin does this
+qt5_add_resources(kwin_smartInvert_SRCS shaders.qrc) # will need to add shader.qrc later will see how kwin does this
 
 kcoreaddons_desktop_to_json(${SMARTINVERT} smartInvert.desktop SERVICE_TYPES kwineffect.desktop)
 
@@ -110,13 +110,13 @@ target_link_libraries(${SMARTINVERT}
         epoxy
         GL
 
-   PRIVATE
+    PRIVATE
         KF5::ConfigCore
         KF5::CoreAddons
         KF5::ConfigWidgets
         KF5::GuiAddons
         KF5::WindowSystem
-
+    
         KF5::ConfigWidgets
         KF5::GlobalAccel
         KF5::I18n
@@ -127,7 +127,7 @@ target_link_libraries(${SMARTINVERT}
 
 install(
     TARGETS
-    ${SMARTINVERT}
+        ${SMARTINVERT}
     DESTINATION
         ${PLUGIN_INSTALL_DIR}/kwin/effects/plugins/
 )
@@ -152,7 +152,7 @@ set(kwin_smartInvert_config_SRCS invert_config.cpp)
 
 qt5_add_dbus_interface(kwin_smartInvert_config_SRCS dbus.xml kwineffects_interface)
 
-add_library(kwin_smartInvert_config MODULE ${kwin_invert_config_SRCS})
+add_library(${SMARTINVERTCONFIG} MODULE ${kwin_smartInvert_config_SRCS})
 
 target_link_libraries(${SMARTINVERTCONFIG}
     Qt5::Core
@@ -176,33 +176,4 @@ install(
     DESTINATION
         ${PLUGIN_INSTALL_DIR}/kwin/effects/configs
 )
-
-#######################################
-# Effect
-# Gray
-#######################################
-# Config
-# add_subdirectory( kcm )
-# set(kwin_effect_grayscale_SRCS plugin.cpp GrayscaleEffect.cpp)
-# qt5_add_resources(kwin_effect_grayscale_SRCS shaders.qrc)
-# add_library(kwin_effect_grayscale SHARED ${kwin_effect_grayscale_SRCS})
-
-#  kcoreaddons_desktop_to_json(kwin_effect_grayscale grayscale.desktop SERVICE_TYPES kwineffect.desktop)
-
-
-
-# for other file, smart invert
-# add_library(${SMARTINVERT} MODULE smartInvert.cpp)
-
-
-# install(TARGETS ${SMARTINVERT} DESTINATION ${MODULEPATH}/kwin/effects/plugins)
-# # execute_process(COMMAND kf5-config --install services OUTPUT_VARIABLE SERVICEPATH OUTPUT_STRIP_TRAILING_WHITESPACE)
-# #install(FILES smartInvert.desktop DESTINATION ${SERVICEPATH}/kwin)
-
-# execute_process(COMMAND kf5-config --install data OUTPUT_VARIABLE DATAPATH OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-# install(FILES shaders_140/smartInvert.frag DESTINATION ${DATAPATH}/kwin/shaders/1.40)
-# install(FILES shaders_110/smartInvert.frag DESTINATION ${DATAPATH}/kwin/shaders/1.10)
-
-
 

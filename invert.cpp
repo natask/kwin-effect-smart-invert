@@ -43,17 +43,17 @@ InvertEffect::InvertEffect()
     QAction* a = new QAction(this);
     a->setObjectName(QStringLiteral("SmartInvert"));
     a->setText(i18n("Toggle Smart Invert Effect"));
-    KGlobalAccel::self()->setDefaultShortcut(a, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_I);
-    KGlobalAccel::self()->setShortcut(a, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_I);
-    effects->registerGlobalShortcut(Qt::CTRL + Qt::META + Qt::Key_I, a);
+    KGlobalAccel::self()->setDefaultShortcut(a, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_R);
+    KGlobalAccel::self()->setShortcut(a, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_R);
+    effects->registerGlobalShortcut(Qt::CTRL + Qt::META + Qt::Key_R, a);
     connect(a, &QAction::triggered, this, &InvertEffect::toggleScreenInversion);
 
     QAction* b = new QAction(this);
     b->setObjectName(QStringLiteral("SmartInvertWindow"));
     b->setText(i18n("Toggle Smart Invert Effect on Window"));
-    KGlobalAccel::self()->setDefaultShortcut(b, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_U);
-    KGlobalAccel::self()->setShortcut(b, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_U);
-    effects->registerGlobalShortcut(Qt::CTRL + Qt::META + Qt::Key_U, b);
+    KGlobalAccel::self()->setDefaultShortcut(b, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_R);
+    KGlobalAccel::self()->setShortcut(b, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_R);
+    effects->registerGlobalShortcut(Qt::CTRL + Qt::META + Qt::Key_R, b);
     connect(b, &QAction::triggered, this, &InvertEffect::toggleWindow);
 
     connect(effects, &EffectsHandler::windowClosed, this, &InvertEffect::slotWindowClosed);
