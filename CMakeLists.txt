@@ -135,6 +135,7 @@ execute_process(COMMAND kf5-config --install data OUTPUT_VARIABLE DATAPATH OUTPU
 install(FILES data/1.40/invert.frag DESTINATION ${DATAPATH}/kwin/shaders/1.40)
 install(FILES data/1.10/invert.frag DESTINATION ${DATAPATH}/kwin/shaders/1.10)
 
+install(DIRECTORY  data/1.40 DESTINATION ${DATAPATH}kwin/shaders FILES_MATCHING PATTERN "*.cpp")
 #######################################
 # Config
 find_package (Qt5 REQUIRED COMPONENTS
