@@ -4,9 +4,9 @@ Intelligently inverts windows by applying a shader that preserves colors other t
 Shader files can be set in =/usr/share/kwin/shaders/1.40=. The file with name =invert.frag= will be selected. Turning the plugin off then back on within KWin effects will apply the new shader.
 Application comes with a few well selected shaders. The default being [[file:data/1.40/invert.frag.log69.cpp]] since it looks the best.
 ** Default Shortcuts
-- inverting the entire screen ::
+- Inverting the entire screen ::
 =SHIFT + CTRL + META + Z=  
-- inverting the current window ::
+- Inverting the current window ::
 =CTRL + META + Z= 
 
 You can change the shortcuts via System Settings -> Global Keyboard Shortcuts -> KWin
@@ -36,22 +36,22 @@ cmake .. && make && sudo make install && (kwin_x11 --replace &)
 #+RESULTS:
 
 ** inspirations
-- plugin  ::
+- Plugin  ::
   - [[https://github.com/KDE/kwin/tree/master/effects/invert]]
   - [[https://github.com/ugjka/kwin-effect-grayscale]]
   - [[https://www.reddit.com/r/kde/comments/hscf6f/attempting_to_write_smart_inversion_effect_for_kde/]]
   - [[https://github.com/alex47/KDE-Rounded-Corners]]
-- shaders ::
+- Shaders ::
   - https://github.com/vn971/linux-color-inversion
   - https://github.com/mlaily/NegativeScreen
   - https://github.com/natask/gnome_invert_windows/blob/master/extension.js
   - https://github.com/maiself/gnome-shell-extension-invert-color/issues/1
 
 ** TODOs
-*** TODO plugin breaks when started on by default
-*** TODO start inverted
-*** TODO what is the difference between SHARED and MODULE in cmake
-*** TODO what is the point of duplicated declarations for keybindings in [[file:invert.cpp]] and [[file:invert_config.cpp]]. 
-*** TODO change internal naming from kwin-effect-smartInvert to kwin-effect-smart-invert
-*** TODO user level plugins
-*** TODO hot swap shader files.
+*** TODO Plugin breaks when started on by default
+*** TODO Start inverted
+*** TODO What is the point of duplicated declarations for keybindings in [[file:invert.cpp]] and [[file:invert_config.cpp]]. 
+*** TODO Change internal naming from kwin-effect-smartInvert to kwin-effect-smart-invert
+*** TODO User level plugins
+*** TODO Hot swap shader files.
+*** TODO Window allow and deny lists.
