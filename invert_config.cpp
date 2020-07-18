@@ -51,14 +51,14 @@ InvertEffectConfig::InvertEffectConfig(QWidget* parent, const QVariantList& args
     QAction* a = actionCollection->addAction(QStringLiteral("SmartInvert"));
     a->setText(i18n("Toggle SmartInvert Effect on all Windows"));
     a->setProperty("isConfigurationAction", true);
-    KGlobalAccel::self()->setDefaultShortcut(a, QList<QKeySequence>() << Qt::SHIFT +  Qt::CTRL + Qt::META + Qt::Key_R);
-    KGlobalAccel::self()->setShortcut(a, QList<QKeySequence>() <<Qt::SHIFT +  Qt::CTRL + Qt::META + Qt::Key_R);
+    KGlobalAccel::self()->setDefaultShortcut(a, QList<QKeySequence>() << Qt::SHIFT +  Qt::CTRL + Qt::META + Qt::Key_Z);
+    KGlobalAccel::self()->setShortcut(a, QList<QKeySequence>() <<Qt::SHIFT +  Qt::CTRL + Qt::META + Qt::Key_Z);
 
     QAction* b = actionCollection->addAction(QStringLiteral("SmartInvertWindow"));
     b->setText(i18n("Toggle SmartInvert Effect on Window"));
     b->setProperty("isConfigurationAction", true);
-    KGlobalAccel::self()->setDefaultShortcut(b, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_R);
-    KGlobalAccel::self()->setShortcut(b, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_R);
+    KGlobalAccel::self()->setDefaultShortcut(b, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_Z);
+    KGlobalAccel::self()->setShortcut(b, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_Z);
 
     mShortcutEditor = new KShortcutsEditor(actionCollection, this,
                                            KShortcutsEditor::GlobalAction, KShortcutsEditor::LetterShortcutsDisallowed);
