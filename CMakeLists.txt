@@ -13,6 +13,27 @@ cmake_policy(SET CMP0054 NEW)
 find_package(ECM REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
+include (FeatureSummary)
+
+add_definitions (-Wall -Werror)
+set (CMAKE_CXX_STANDARD 14)
+set (CMAKE_CXX_STANDARD_REQUIRED ON)
+set (CMAKE_CXX_EXTENSIONS OFF)
+
+find_package (ECM REQUIRED NO_MODULE)
+set (CMAKE_MODULE_PATH
+    ${CMAKE_MODULE_PATH}
+    ${ECM_MODULE_PATH}
+    ${ECM_KDE_MODULE_DIR}
+    ${CMAKE_SOURCE_DIR}/cmake
+    ${CMAKE_SOURCE_DIR}/cmake/Modules
+)
+
+include(KDEInstallDirs)
+include(KDECMakeSettings)
+
+feature_summary (WHAT ALL)
+
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Gui
     Core
@@ -93,6 +114,17 @@ endif (XCB_FOUND)
 
 #######################################
 # Effect
+find_package (Qt5 REQUIRED COMPONENTS
+    Core
+)
+
+find_package (KF5 REQUIRED COMPONENTS
+    Service
+    WindowSystem
+    GlobalAccel
+    I18n
+)
+
 set(kwin_smartInvert_SRCS plugin.cpp invert.cpp)
 
 add_library(${SMARTINVERT}  SHARED ${kwin_smartInvert_SRCS})
@@ -127,7 +159,7 @@ install(
     TARGETS
         ${SMARTINVERT}
     DESTINATION
-        ${PLUGIN_INSTALL_DIR}/kwin/effects/plugins/
+        ${MODULEPATH}/kwin/effects/plugins/
 )
 
 execute_process(COMMAND kf5-config --install data OUTPUT_VARIABLE DATAPATH OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -178,7 +210,7 @@ install(
     TARGETS
         ${SMARTINVERTCONFIG}
     DESTINATION
-        ${PLUGIN_INSTALL_DIR}/kwin/effects/configs
+    ${MODULEPATH}/kwin/effects/configs
 )
 
 
