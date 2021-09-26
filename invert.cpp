@@ -87,21 +87,48 @@ namespace KWin
 
     QFile file(fragmentshader);
     if (file.open(QFile::ReadOnly))
-      {
-        QByteArray frag = file.readAll();
-        m_shader = KWin::ShaderManager::instance()->generateCustomShader(KWin::ShaderTrait::MapTexture, QByteArray(), frag);
-        file.close();
+    {
+      QByteArray frag = file.readAll();
+      m_shader = KWin::ShaderManager::instance()->generateCustomShader(KWin::ShaderTrait::MapTexture, QByteArray(), frag);
+      file.close();
 
-        if (!m_shader->isValid()) {
-          //qCCritical(KWINEFFECTS) << "The shader failed to load!";
-          return false;
-        }
-        return true;
+      if (!m_shader->isValid()) {
+        //qCCritical(KWINEFFECTS) << "The shader failed to load!";
+        return false;
       }
+      return true;
+    }
     else {
       deleteLater();
       return false;
     }
+  }
+
+  /**
+   * Returns shader from package kwin/shaders/1.40/.
+   * **/
+  GLShader* InvertEffect::readShader()
+  {
+    auto shader = m_shader;
+    QString shadersDir(QStringLiteral("kwin/shaders/1.10/"));
+#ifdef KWIN_HAVE_OPENGLES
+    const qint64 coreVersionNumber = kVersionNumber(3, 0);
+#else
+    const qint64 version = KWin::kVersionNumber(1, 40);
+#endif
+    if (KWin::GLPlatform::instance()->glslVersion() >= version)
+      shadersDir = QStringLiteral("kwin/shaders/1.40/");
+
+    const QString fragmentshader = QStandardPaths::locate(QStandardPaths::GenericDataLocation, shadersDir + QStringLiteral("invert.frag"));
+
+
+    QFile file(fragmentshader);
+    if (file.open(QFile::ReadOnly))
+    {
+      QByteArray frag = file.readAll();
+      shader = KWin::ShaderManager::instance()->generateCustomShader(KWin::ShaderTrait::MapTexture, QByteArray(), frag);
+      file.close();}
+    return shader;
   }
 
   void InvertEffect::drawWindow(EffectWindow* w, int mask, const QRegion &region, WindowPaintData& data)
@@ -111,11 +138,13 @@ namespace KWin
       m_valid = loadData();
 
     bool useShader = m_valid && (m_allWindows != m_windows.contains(w));
+    auto shader = m_windows_shader.value(w, m_shader);
+
     if (useShader) {
       ShaderManager *shaderManager = ShaderManager::instance();
-      shaderManager->pushShader(m_shader);
+      shaderManager->pushShader(shader);
 
-      data.shader = m_shader;
+      data.shader = shader;
     }
 
     effects->drawWindow(w, mask, region, data);
@@ -138,11 +167,14 @@ namespace KWin
 
   void InvertEffect::slotWindowClosed(EffectWindow* w)
   {
+    m_windows_shader.remove(w);
     m_windows.removeOne(w);
   }
 
   void InvertEffect::toggleScreenInversion()
   {
+    m_valid = loadData(); //hotswap
+    m_windows_shader.clear();
     m_allWindows = !m_allWindows;
     effects->addRepaintFull();
   }
@@ -152,6 +184,7 @@ namespace KWin
     if (!effects->activeWindow()) {
       return;
     }
+    m_windows_shader.insert(effects->activeWindow(), readShader());
     if (!m_windows.contains(effects->activeWindow()))
       m_windows.append(effects->activeWindow());
     else

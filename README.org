@@ -4,6 +4,9 @@ Intelligently inverts windows by applying a shader that preserves colors other t
 Shader files can be set in =/usr/share/kwin/shaders/1.40=. The file with name =invert.frag= will be selected. Turning the plugin off then back on within KWin effects will apply the new shader.
 Application comes with a few well selected shaders. The default being [[file:data/1.40/invert.frag.log69.cpp]] since it looks the best.
 ** Default Shortcuts
+:PROPERTIES:
+:ID:       21ab3fc5-3b89-43dc-b81c-ac42309efc24
+:END:
 - Inverting the entire screen ::
 =SHIFT + CTRL + META + Z=  
 - Inverting the current window ::
@@ -11,6 +14,17 @@ Application comes with a few well selected shaders. The default being [[file:dat
 
 You can change the shortcuts via System Settings -> Global Keyboard Shortcuts -> KWin
 Or directly from the kwin effects settings menu.
+** Features
+:PROPERTIES:
+:ID:       947c4ab3-9cf6-4d99-9a7b-f7893ddd9cb0
+:END:
+:LOGBOOK:
+- Newly Created           [2021-09-26 Sun 00:33:31]
+:END:
+- Hot Swap ::
+  + change shader file by following [[Custom shaders]]
+  + invert a window to try out shader without affecting all windows.
+  + invert the entire screen to apply new shader to all windows.
 ** Dependencies
 I haven't tested these dependencies. refer to [[https://github.com/ugjka/kwin-,ileffect-grayscale][this]] and [[https://github.com/alex47/KDE-Rounded-Corners][this]] repos.
 - Arch based ::
@@ -58,7 +72,11 @@ cmake .. && make && sudo make install && (kwin_x11 --replace &)
 :LOGBOOK:
 - State "DONE"       from "NEXT"       [2021-09-25 Sat 20:54:16]
 :END:
-*** TODO Hot swap shader files.
-*** TODO Window allow and deny lists.
-*** TODO What is the point of duplicated declarations for keybindings in [[file:invert.cpp]] and [[file:invert_config.cpp]].
+*** DONE Hot swap shader files.
+:LOGBOOK:
+- State "DONE"       from "NEXT"       [2021-09-25 Sat 21:00:30]
+:END:
+*** TODO Window pass and block lists.
 *** TODO User level plugins
+I beleve I have already implemented this. It required modifying CMakeList.txt.
+*** TODO What is the point of duplicated declarations for keybindings in [[file:invert.cpp]] and [[file:invert_config.cpp]].

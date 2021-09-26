@@ -55,6 +55,7 @@ public Q_SLOTS:
     void slotWindowClosed(KWin::EffectWindow *w);
 
 protected:
+    GLShader* readShader();
     bool loadData();
 
 private:
@@ -63,6 +64,7 @@ private:
     GLShader* m_shader;
     bool m_allWindows;
     QList<EffectWindow*> m_windows;
+    QMap<EffectWindow*,GLShader*> m_windows_shader;
 };
 
 inline int InvertEffect::requestedEffectChainPosition() const
