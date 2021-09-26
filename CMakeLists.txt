@@ -103,14 +103,6 @@ if (NOT EFFECTS_H OR NOT KWIN_GLUTILS OR NOT KWIN_EFFECTS OR NOT OPENGL)
     message(FATAL_ERROR "cant continue")
 endif (NOT EFFECTS_H OR NOT KWIN_GLUTILS OR NOT KWIN_EFFECTS OR NOT OPENGL)
 
-if (XCB_FOUND)
-    target_link_libraries(${SMARTINVERT} PUBLIC Qt5::X11Extras XCB::XCB)
-else (XCB_FOUND)
-    if (X11_FOUND)
-        target_link_libraries(${SMARTINVERT} PUBLIC ${X11_X11_LIB} ${X11_LIBRARIES})
-    endif (X11_FOUND)
-endif (XCB_FOUND)
-
 
 #######################################
 # Effect
