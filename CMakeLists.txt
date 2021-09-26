@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(SMARTINVERT kwin_effect_smartInvert)
+set(SMARTINVERT kwin_effect_smart_invert)
 
 project(${SMARTINVERT})
 
@@ -117,9 +117,9 @@ find_package (KF5 REQUIRED COMPONENTS
     I18n
 )
 
-set(kwin_smartInvert_SRCS plugin.cpp invert.cpp)
+set(kwin_smart_invert_SRCS plugin.cpp invert.cpp)
 
-add_library(${SMARTINVERT}  SHARED ${kwin_smartInvert_SRCS})
+add_library(${SMARTINVERT}  SHARED ${kwin_smart_invert_SRCS})
 
 kcoreaddons_desktop_to_json(${SMARTINVERT} smartInvert.desktop SERVICE_TYPES kwineffect.desktop)
 
@@ -175,12 +175,12 @@ find_package (KF5 REQUIRED COMPONENTS
     XmlGui
 )
 
-set(SMARTINVERTCONFIG kwin_smartInvert_config)
-set(kwin_smartInvert_config_SRCS invert_config.cpp)
+set(SMARTINVERTCONFIG kwin_effect_smart_invert_config)
+set(kwin_smart_invert_config_SRCS invert_config.cpp)
 
-qt5_add_dbus_interface(kwin_smartInvert_config_SRCS dbus.xml kwineffects_interface)
+qt5_add_dbus_interface(kwin_smart_invert_config_SRCS dbus.xml kwineffects_interface)
 
-add_library(${SMARTINVERTCONFIG} MODULE ${kwin_smartInvert_config_SRCS})
+add_library(${SMARTINVERTCONFIG} MODULE ${kwin_smart_invert_config_SRCS})
 
 target_link_libraries(${SMARTINVERTCONFIG}
     Qt5::Core
@@ -196,7 +196,7 @@ target_link_libraries(${SMARTINVERTCONFIG}
     KF5::XmlGui
 )
 
-kcoreaddons_desktop_to_json(${SMARTINVERTCONFIG}  smartInvert_config.desktop SERVICE_TYPES kcmodule.desktop)
+kcoreaddons_desktop_to_json(${SMARTINVERTCONFIG}  smartInvertConfig.desktop SERVICE_TYPES kcmodule.desktop)
 
 install(
     TARGETS
