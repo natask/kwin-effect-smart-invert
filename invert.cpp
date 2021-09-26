@@ -38,7 +38,7 @@ namespace KWin
     :   m_inited(false),
         m_valid(true),
         m_shader(nullptr),
-        m_allWindows(false)
+        m_allWindows(true)
   {
     QAction* a = new QAction(this);
     a->setObjectName(QStringLiteral("SmartInvert"));

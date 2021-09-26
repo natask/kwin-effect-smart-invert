@@ -50,8 +50,10 @@ cmake .. && make && sudo make install && (kwin_x11 --replace &)
   - https://github.com/maiself/gnome-shell-extension-invert-color/issues/1
 
 ** TODOs
-*** TODO Plugin breaks when started on by default
-*** TODO Start inverted
+*** DONE Auto Start inverted
+:LOGBOOK:
+- State "DONE"       from "NEXT"       [2021-09-25 Sat 20:53:42]
+:END:
 *** TODO What is the point of duplicated declarations for keybindings in [[file:invert.cpp]] and [[file:invert_config.cpp]]. 
 *** TODO Change internal naming from kwin-effect-smartInvert to kwin-effect-smart-invert
 *** TODO User level plugins
