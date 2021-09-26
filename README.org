@@ -14,7 +14,9 @@ Or directly from the kwin effects settings menu.
 ** Dependencies
 I haven't tested these dependencies. refer to [[https://github.com/ugjka/kwin-,ileffect-grayscale][this]] and [[https://github.com/alex47/KDE-Rounded-Corners][this]] repos.
 - Arch based ::
-You need extra-cmake-modules, kwin and kf5 *-dev packages installed
+#+begin_src bash
+sudo pacman -S extra-cmake-modules kwin kf5
+#+end_src
 - Debian based (Ubuntu, Kubuntu, KDE Neon) ::
 #+begin_src bash
 sudo apt install git cmake g++ gettext extra-cmake-modules qttools5-dev libqt5x11extras5-dev libkf5configwidgets-dev libkf5crash-dev libkf5globalaccel-dev libkf5kio-dev libkf5notifications-dev kinit-dev kwin-dev 
