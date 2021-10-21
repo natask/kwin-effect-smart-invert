@@ -78,7 +78,7 @@ namespace KWin
   void InvertEffect::reconfigure(ReconfigureFlags)
   {
     InvertConfig::self()->read();
-    m_blocklist = InvertConfig::blocklist().split(",");
+    m_blocklist = InvertConfig::blocklist().toLower().split(",");
   }
 
   bool InvertEffect::loadData()
@@ -145,7 +145,7 @@ namespace KWin
 
   QString InvertEffect::getWindowApplicationName(EffectWindow * w) {
     auto windowClass = w->windowClass();
-    return windowClass.split(" ")[1];
+    return windowClass.split(" ")[1].toLower();
   }
 
   void InvertEffect::drawWindow(EffectWindow* w, int mask, const QRegion &region, WindowPaintData& data)

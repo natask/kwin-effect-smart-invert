@@ -25,6 +25,11 @@ Or directly from the kwin effects settings menu.
   + change shader file by following [[Custom shaders]]
   + invert a window to try out shader without affecting all windows.
   + invert the entire screen to apply new shader to all windows.
+- Block list ::
+  + window classes added to blocklist in kde system settings effect configuration are not inverted.
+  + Use `xprop WM_CLASS` or `wmctrl -lx` and take the second string to get window class. For example =xprop WM_ClASS= returns =M_CLASS(STRING) = "systemsettings5", "systemsettings"= for a system settings window. Take the second string, ="systemsettings"= and place in blocklist.
+  + Case insensitive.
+  + Separate window classes with comma. E.g: =discord,emacs=.
 ** Dependencies
 I haven't tested these dependencies. refer to [[https://github.com/ugjka/kwin-,ileffect-grayscale][this]] and [[https://github.com/alex47/KDE-Rounded-Corners][this]] repos.
 - Arch based ::
@@ -64,6 +69,15 @@ cmake .. && make && sudo make install && (kwin_x11 --replace &)
   - https://github.com/maiself/gnome-shell-extension-invert-color/issues/1
 
 ** TODOs
+*** TODO Window pass lists.
+:PROPERTIES:
+:ID:       30387191-1d41-45c7-a551-c7d379e01085
+:END:
+:LOGBOOK:
+- State "TODO"       from              [2021-10-21 Thu 10:57:31 PDT]
+- Newly Created           [2021-10-21 Thu 10:57:19 PDT]
+:END:
+*** TODO What is the point of duplicated declarations for keybindings in [[file:invert.cpp]] and [[file:invert_config.cpp]].
 *** DONE Auto Start inverted
 :LOGBOOK:
 - State "DONE"       from "NEXT"       [2021-09-25 Sat 20:53:42]
@@ -76,7 +90,15 @@ cmake .. && make && sudo make install && (kwin_x11 --replace &)
 :LOGBOOK:
 - State "DONE"       from "NEXT"       [2021-09-25 Sat 21:00:30]
 :END:
-*** TODO Window pass and block lists.
-*** TODO User level plugins
+*** DONE Window block lists.
+:PROPERTIES:
+:ID:       237558a9-924a-4f77-abcc-6d781d4ddf37
+:END:
+:LOGBOOK:
+- State "DONE"       from "NEXT"       [2021-10-21 Thu 10:57:17 PDT]
+:END:
+*** DONE User level plugins
+:LOGBOOK:
+- State "DONE"       from "NEXT"       [2021-10-21 Thu 10:57:45 PDT]
+:END:
 I beleve I have already implemented this. It required modifying CMakeList.txt.
-*** TODO What is the point of duplicated declarations for keybindings in [[file:invert.cpp]] and [[file:invert_config.cpp]].
