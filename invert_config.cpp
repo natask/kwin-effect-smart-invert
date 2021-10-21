@@ -23,7 +23,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "invertconfig.h"
 
 #include <kwineffects_interface.h>
-#include <config-kwin.h>
 
 #include <QAction>
 
@@ -76,12 +75,8 @@ InvertEffectConfig::InvertEffectConfig(QWidget* parent, const QVariantList& args
     m_ui->shortcutEditor->addCollection(actionCollection);
     connect(m_ui->shortcutEditor, &KShortcutsEditor::keyChange, this, &InvertEffectConfig::markAsChanged);
 
-    InvertConfig::instance(KWIN_CONFIG);
+    InvertConfig::instance("kwinrc");
     addConfig(InvertConfig::self(), m_ui);
-
-    // QLoggingCategory category("SMARTINVERT");
-    // qCDebug(category) << "does this even run";
-    // qCDebug(category) << (m_ui->kcfg_Blocklist->text().split(","));
 
     load();
 }
@@ -101,7 +96,7 @@ void InvertEffectConfig::save()
     OrgKdeKwinEffectsInterface interface(QStringLiteral("org.kde.KWin"),
                                          QStringLiteral("/Effects"),
                                          QDBusConnection::sessionBus());
-    interface.reconfigureEffect(QStringLiteral("smartInvert"));
+    interface.reconfigureEffect(QStringLiteral("kwin_effect_smart_invert"));
 }
 
 void InvertEffectConfig::defaults()

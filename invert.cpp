@@ -79,9 +79,6 @@ namespace KWin
   {
     InvertConfig::self()->read();
     m_blocklist = InvertConfig::blocklist().split(",");
-    QLoggingCategory category("SMARTINVERT recon");
-    qCDebug(category) << (m_blocklist);
-    qCDebug(category) << InvertConfig::isBlocklistImmutable();
   }
 
   bool InvertEffect::loadData()
@@ -158,12 +155,6 @@ namespace KWin
       m_valid = loadData();
 
     bool useShader = m_valid && (m_allWindows != m_windows.contains(w)) && !m_blocklist.contains(getWindowApplicationName(w));
-    // QLoggingCategory category("SMARTINVERT");
-    // qCDebug(category) << (m_blocklist);
-    // qCDebug(category) << InvertConfig::blocklist();
-    // InvertConfig::self()->read();
-    // qCDebug(category) << InvertConfig::blocklist();
-    // qCDebug(category) << (getWindowApplicationName(w));
     auto shader = m_windows_shader.value(w, m_shader);
 
     if (useShader) {

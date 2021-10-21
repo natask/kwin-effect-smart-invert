@@ -23,7 +23,7 @@
           <item row="0" column="1">
             <widget class="QLineEdit" name="kcfg_Blocklist">
               <property name="toolTip">
-                <string>The windows that should be excluded from inverting, by window class. Comma-separated.</string>
+                <string>The windows that should be excluded from inverting, by window class. Comma-separated. Use `xprop WM_CLASS` or `wmctrl -lx` and lowercase the second string to get window class.</string>
               </property>
               <property name="statusTip">
                 <string>Excluded window classes</string>
@@ -68,7 +68,6 @@
     </customwidget>
   </customwidgets>
   <tabstops>
-    <tabstop>tabWidget</tabstop>
     <tabstop>kcfg_Blocklist</tabstop>
   </tabstops>
   <resources/>
