@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+  <class>InvertEffectConfigForm</class>
+  <widget class="QWidget" name="InvertEffectConfigForm">
+    <property name="geometry">
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>595</width>
+        <height>441</height>
+      </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+        <layout class="QFormLayout" name="layout_Blocklist">
+          <item row="0" column="0">
+            <widget class="QLabel" name="label_Blocklist">
+              <property name="text">
+                <string>blocklist:</string>
+              </property>
+            </widget>
+          </item>
+          <item row="0" column="1">
+            <widget class="QLineEdit" name="kcfg_Blocklist">
+              <property name="toolTip">
+                <string>The windows that should be excluded from inverting, by window class. Comma-separated.</string>
+              </property>
+              <property name="statusTip">
+                <string>Excluded window classes</string>
+              </property>
+              <property name="whatsThis">
+                <string>Excluded window classes</string>
+              </property>
+            </widget>
+          </item>
+        </layout>
+      </item>
+      <item>
+        <widget class="QGroupBox" name="groupBox_2">
+          <property name="title">
+            <string>Activation</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_2">
+            <item row="0" column="0" colspan="2">
+              <widget class="KShortcutsEditor" name="shortcutEditor" native="true">
+                <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                  </sizepolicy>
+                </property>
+                <property name="actionTypes">
+                  <enum>KShortcutsEditor::GlobalAction</enum>
+                </property>
+              </widget>
+            </item>
+          </layout>
+        </widget>
+      </item>
+    </layout>
+  </widget>
+  <customwidgets>
+    <customwidget>
+      <class>KShortcutsEditor</class>
+      <extends>QWidget</extends>
+      <header location="global">KShortcutsEditor</header>
+      <container>1</container>
+    </customwidget>
+  </customwidgets>
+  <tabstops>
+    <tabstop>tabWidget</tabstop>
+    <tabstop>kcfg_Blocklist</tabstop>
+  </tabstops>
+  <resources/>
+  <connections/>
+</ui>

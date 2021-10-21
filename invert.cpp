@@ -21,6 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "invert.h"
 
+// KConfigSkeleton
+#include "invertconfig.h"
+
 #include <QAction>
 #include <QFile>
 #include <kwinglutils.h>
@@ -40,6 +43,8 @@ namespace KWin
         m_shader(nullptr),
         m_allWindows(true)
   {
+    initConfig<InvertConfig>();
+
     QAction* a = new QAction(this);
     a->setObjectName(QStringLiteral("SmartInvert"));
     a->setText(i18n("Toggle Smart Invert Effect"));
@@ -56,6 +61,7 @@ namespace KWin
     effects->registerGlobalShortcut(Qt::CTRL + Qt::META + Qt::Key_R, b);
     connect(b, &QAction::triggered, this, &InvertEffect::toggleWindow);
 
+    reconfigure(ReconfigureAll);
     connect(effects, &EffectsHandler::windowClosed, this, &InvertEffect::slotWindowClosed);
   }
 
@@ -67,6 +73,15 @@ namespace KWin
   bool InvertEffect::supported()
   {
     return effects->compositingType() == OpenGL2Compositing;
+  }
+
+  void InvertEffect::reconfigure(ReconfigureFlags)
+  {
+    InvertConfig::self()->read();
+    m_blocklist = InvertConfig::blocklist().split(",");
+    QLoggingCategory category("SMARTINVERT recon");
+    qCDebug(category) << (m_blocklist);
+    qCDebug(category) << InvertConfig::isBlocklistImmutable();
   }
 
   bool InvertEffect::loadData()
@@ -131,13 +146,24 @@ namespace KWin
     return shader;
   }
 
+  QString InvertEffect::getWindowApplicationName(EffectWindow * w) {
+    auto windowClass = w->windowClass();
+    return windowClass.split(" ")[1];
+  }
+
   void InvertEffect::drawWindow(EffectWindow* w, int mask, const QRegion &region, WindowPaintData& data)
   {
     // Load if we haven't already
     if (m_valid && !m_inited)
       m_valid = loadData();
 
-    bool useShader = m_valid && (m_allWindows != m_windows.contains(w));
+    bool useShader = m_valid && (m_allWindows != m_windows.contains(w)) && !m_blocklist.contains(getWindowApplicationName(w));
+    // QLoggingCategory category("SMARTINVERT");
+    // qCDebug(category) << (m_blocklist);
+    // qCDebug(category) << InvertConfig::blocklist();
+    // InvertConfig::self()->read();
+    // qCDebug(category) << InvertConfig::blocklist();
+    // qCDebug(category) << (getWindowApplicationName(w));
     auto shader = m_windows_shader.value(w, m_shader);
 
     if (useShader) {

@@ -36,19 +36,23 @@ class InvertEffect
     : public Effect
 {
     Q_OBJECT
+    Q_PROPERTY(QStringList blocklist READ blocklist);
 public:
     InvertEffect();
     ~InvertEffect() override;
+    void reconfigure(ReconfigureFlags) override;
 
     void drawWindow(EffectWindow* w, int mask, const QRegion &region, WindowPaintData& data) override;
     void paintEffectFrame(KWin::EffectFrame* frame, const QRegion &region, double opacity, double frameOpacity) override;
     bool isActive() const override;
     bool provides(Feature) override;
+    QString getWindowApplicationName(EffectWindow * w);
 
     int requestedEffectChainPosition() const override;
 
     static bool supported();
 
+    QStringList blocklist() const;
 public Q_SLOTS:
     void toggleScreenInversion();
     void toggleWindow();
@@ -63,9 +67,15 @@ private:
     bool m_valid;
     GLShader* m_shader;
     bool m_allWindows;
+    QStringList m_blocklist;
     QList<EffectWindow*> m_windows;
     QMap<EffectWindow*,GLShader*> m_windows_shader;
 };
+
+inline QStringList InvertEffect::blocklist() const
+{
+        return m_blocklist;
+}
 
 inline int InvertEffect::requestedEffectChainPosition() const
 {

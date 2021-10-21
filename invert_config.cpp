@@ -19,7 +19,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
 #include "invert_config.h"
+// KConfigSkeleton
+#include "invertconfig.h"
+
 #include <kwineffects_interface.h>
+#include <config-kwin.h>
 
 #include <QAction>
 
@@ -32,17 +36,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QVBoxLayout>
 
+#include <QLineEdit>
+
 K_PLUGIN_FACTORY_WITH_JSON(InvertEffectConfigFactory,
                            "smartInvertConfig.json",
                            registerPlugin<KWin::InvertEffectConfig>();)
 
 namespace KWin
 {
+    InvertEffectConfigForm::InvertEffectConfigForm(QWidget* parent) : QWidget(parent)
+    {
+        setupUi(this);
+    }
+
 
 InvertEffectConfig::InvertEffectConfig(QWidget* parent, const QVariantList& args) :
     KCModule(parent, args)
 {
     QVBoxLayout* layout = new QVBoxLayout(this);
+    m_ui = new InvertEffectConfigForm(this);
+    layout->addWidget(m_ui);
 
     // Shortcut config. The shortcut belongs to the component "kwin"!
     KActionCollection *actionCollection = new KActionCollection(this, QStringLiteral("kwin"));
@@ -60,10 +73,15 @@ InvertEffectConfig::InvertEffectConfig(QWidget* parent, const QVariantList& args
     KGlobalAccel::self()->setDefaultShortcut(b, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_Z);
     KGlobalAccel::self()->setShortcut(b, QList<QKeySequence>() << Qt::CTRL + Qt::META + Qt::Key_Z);
 
-    mShortcutEditor = new KShortcutsEditor(actionCollection, this,
-                                           KShortcutsEditor::GlobalAction, KShortcutsEditor::LetterShortcutsDisallowed);
-    connect(mShortcutEditor, &KShortcutsEditor::keyChange, this, &InvertEffectConfig::markAsChanged);
-    layout->addWidget(mShortcutEditor);
+    m_ui->shortcutEditor->addCollection(actionCollection);
+    connect(m_ui->shortcutEditor, &KShortcutsEditor::keyChange, this, &InvertEffectConfig::markAsChanged);
+
+    InvertConfig::instance(KWIN_CONFIG);
+    addConfig(InvertConfig::self(), m_ui);
+
+    // QLoggingCategory category("SMARTINVERT");
+    // qCDebug(category) << "does this even run";
+    // qCDebug(category) << (m_ui->kcfg_Blocklist->text().split(","));
 
     load();
 }
@@ -71,23 +89,15 @@ InvertEffectConfig::InvertEffectConfig(QWidget* parent, const QVariantList& args
 InvertEffectConfig::~InvertEffectConfig()
 {
     // Undo (only) unsaved changes to global key shortcuts
-    mShortcutEditor->undo();
-}
-
-void InvertEffectConfig::load()
-{
-    KCModule::load();
-
-    emit changed(false);
+    m_ui->shortcutEditor->undo();
 }
 
 void InvertEffectConfig::save()
 {
     KCModule::save();
 
-    mShortcutEditor->save();    // undo() will restore to this state from now on
+    m_ui->shortcutEditor->save();    // undo() will restore to this state from now on
 
-    emit changed(false);
     OrgKdeKwinEffectsInterface interface(QStringLiteral("org.kde.KWin"),
                                          QStringLiteral("/Effects"),
                                          QDBusConnection::sessionBus());
@@ -96,9 +106,8 @@ void InvertEffectConfig::save()
 
 void InvertEffectConfig::defaults()
 {
-    mShortcutEditor->allDefault();
-
-    emit changed(true);
+    m_ui->shortcutEditor->allDefault();
+    KCModule::defaults();
 }
 
 

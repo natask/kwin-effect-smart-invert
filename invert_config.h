@@ -22,12 +22,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define KWIN_INVERT_CONFIG_H
 
 #include <kcmodule.h>
+#include "ui_invert_config.h"
 
 class KShortcutsEditor;
 
 namespace KWin
 {
 
+class InvertEffectConfigForm : public QWidget, public Ui::InvertEffectConfigForm
+    {
+        Q_OBJECT
+        public:
+            explicit InvertEffectConfigForm(QWidget* parent);
+};
 class InvertEffectConfig : public KCModule
 {
     Q_OBJECT
@@ -37,11 +44,10 @@ public:
 
 public Q_SLOTS:
     void save() override;
-    void load() override;
     void defaults() override;
 
 private:
-    KShortcutsEditor* mShortcutEditor;
+    InvertEffectConfigForm* m_ui;
 };
 
 } // namespace

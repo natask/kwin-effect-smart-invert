@@ -103,7 +103,7 @@ if (NOT EFFECTS_H OR NOT KWIN_GLUTILS OR NOT KWIN_EFFECTS OR NOT OPENGL)
     message(FATAL_ERROR "cant continue")
 endif (NOT EFFECTS_H OR NOT KWIN_GLUTILS OR NOT KWIN_EFFECTS OR NOT OPENGL)
 
-
+configure_file(config-kwin.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-kwin.h)
 #######################################
 # Effect
 find_package (Qt5 REQUIRED COMPONENTS
@@ -118,6 +118,7 @@ find_package (KF5 REQUIRED COMPONENTS
 )
 
 set(kwin_smart_invert_SRCS plugin.cpp invert.cpp)
+kconfig_add_kcfg_files(kwin_smart_invert_SRCS GENERATE_MOC invertconfig.kcfgc)
 
 add_library(${SMARTINVERT}  SHARED ${kwin_smart_invert_SRCS})
 
@@ -134,6 +135,7 @@ target_link_libraries(${SMARTINVERT}
 
     PRIVATE
         KF5::ConfigCore
+        KF5::ConfigGui
         KF5::CoreAddons
         KF5::ConfigWidgets
         KF5::GuiAddons
@@ -177,6 +179,8 @@ find_package (KF5 REQUIRED COMPONENTS
 
 set(SMARTINVERTCONFIG kwin_effect_smart_invert_config)
 set(kwin_smart_invert_config_SRCS invert_config.cpp)
+ki18n_wrap_ui(kwin_smart_invert_config_SRCS invert_config.ui)
+kconfig_add_kcfg_files(kwin_smart_invert_config_SRCS GENERATE_MOC invertconfig.kcfgc)
 
 qt5_add_dbus_interface(kwin_smart_invert_config_SRCS dbus.xml kwineffects_interface)
 
