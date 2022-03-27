@@ -78,6 +78,9 @@ cmake .. && make && sudo make install && (kwin_x11 --replace &)
 - Newly Created           [2021-10-21 Thu 10:57:19 PDT]
 :END:
 *** TODO What is the point of duplicated declarations for keybindings in [[file:invert.cpp]] and [[file:invert_config.cpp]].
+:PROPERTIES:
+:ID:       bb82c42b-eaea-4f02-bbeb-0050736469e7
+:END:
 *** DONE Auto Start inverted
 :LOGBOOK:
 - State "DONE"       from "NEXT"       [2021-09-25 Sat 20:53:42]

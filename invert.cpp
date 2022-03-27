@@ -72,7 +72,7 @@ namespace KWin
 
   bool InvertEffect::supported()
   {
-    return effects->compositingType() == OpenGL2Compositing;
+    return effects->compositingType() == OpenGLCompositing;
   }
 
   void InvertEffect::reconfigure(ReconfigureFlags)
