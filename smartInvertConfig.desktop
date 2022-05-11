@@ -5,7 +5,7 @@ X-KDE-ServiceTypes=KCModule
 X-KDE-Library=kwin_effect_smart_invert_config
 X-KDE-ParentComponents=kwin_effect_smart_invert
 
-Name=SmartInvert
+Name=Smart Invert
 Name[af]=Keer om
 Name[ar]=اعكس
 Name[be]=Інвертаваць

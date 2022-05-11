@@ -4,8 +4,8 @@ set(SMARTINVERT kwin_effect_smart_invert)
 
 project(${SMARTINVERT})
 
-set(QT_MIN_VERSION "5.4.0")
-set(KF5_MIN_VERSION "5.9.0")
+set(QT_MIN_VERSION "5.15.0")
+set(KF5_MIN_VERSION "5.91")
 
 
 cmake_policy(SET CMP0054 NEW)
@@ -114,6 +114,14 @@ if (NOT EFFECTS_H OR NOT KWIN_GLUTILS OR NOT KWIN_EFFECTS OR NOT OPENGL)
     message(FATAL_ERROR "cant continue")
 endif (NOT EFFECTS_H OR NOT KWIN_GLUTILS OR NOT KWIN_EFFECTS OR NOT OPENGL)
 
+function(kwin_add_effect_config name)
+    list(REMOVE_ITEM ARGV ${name})
+    kcoreaddons_add_plugin(${name} INSTALL_NAMESPACE "kwin/effects/configs" SOURCES ${ARGV})
+endfunction()
+
+macro(KWIN4_ADD_EFFECT_MODULE name)
+    kcoreaddons_add_plugin(${name} SOURCES ${ARGN} INSTALL_NAMESPACE "kwin/effects/plugins")
+endmacro()
 #######################################
 # Effect
 find_package (Qt5 REQUIRED COMPONENTS
@@ -127,12 +135,10 @@ find_package (KF5 REQUIRED COMPONENTS
     I18n
 )
 
-set(kwin_smart_invert_SRCS plugin.cpp invert.cpp)
-kconfig_add_kcfg_files(kwin_smart_invert_SRCS invertconfig.kcfgc)
+set(SMART_INVERT_SRCS plugin.cpp invert.cpp)
+kconfig_add_kcfg_files(SMART_INVERT_SRCS invertconfig.kcfgc)
 
-add_library(${SMARTINVERT}  SHARED ${kwin_smart_invert_SRCS})
-
-kcoreaddons_desktop_to_json(${SMARTINVERT} smartInvert.desktop SERVICE_TYPES kwineffect.desktop)
+kwin4_add_effect_module(${SMARTINVERT} ${SMART_INVERT_SRCS})
 
 target_link_libraries(${SMARTINVERT}
     PUBLIC
@@ -159,17 +165,9 @@ target_link_libraries(${SMARTINVERT}
         #KWinEffects::KWinEffects
         )
 
-install(
-    TARGETS
-        ${SMARTINVERT}
-    DESTINATION
-        ${MODULEPATH}/kwin/effects/plugins/
-)
 
-execute_process(COMMAND kf5-config --install data OUTPUT_VARIABLE DATAPATH OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-install(FILES data/1.40/invert.frag DESTINATION ${DATAPATH}/kwin/shaders/1.40)
-install(FILES data/1.10/invert.frag DESTINATION ${DATAPATH}/kwin/shaders/1.10)
+install(FILES data/1.40/invert.frag DESTINATION ${DATAPATH}kwin/shaders/1.40)
+install(FILES data/1.10/invert.frag DESTINATION ${DATAPATH}kwin/shaders/1.10)
 
 install(DIRECTORY  data/1.40 DESTINATION ${DATAPATH}kwin/shaders FILES_MATCHING PATTERN "*.cpp")
 #######################################
@@ -188,13 +186,12 @@ find_package (KF5 REQUIRED COMPONENTS
 )
 
 set(SMARTINVERTCONFIG kwin_effect_smart_invert_config)
-set(kwin_smart_invert_config_SRCS invert_config.cpp)
-ki18n_wrap_ui(kwin_smart_invert_config_SRCS invert_config.ui)
-kconfig_add_kcfg_files(kwin_smart_invert_config_SRCS invertconfig.kcfgc)
+set(SMARTINVERTCONFIG_SRCS invert_config.cpp)
+ki18n_wrap_ui(SMARTINVERTCONFIG_SRCS invert_config.ui)
+kconfig_add_kcfg_files(SMARTINVERTCONFIG_SRCS invertconfig.kcfgc)
 
-qt5_add_dbus_interface(kwin_smart_invert_config_SRCS dbus.xml kwineffects_interface)
-
-add_library(${SMARTINVERTCONFIG} MODULE ${kwin_smart_invert_config_SRCS})
+qt5_add_dbus_interface(SMARTINVERTCONFIG_SRCS dbus.xml kwineffects_interface)
+add_library(${SMARTINVERTCONFIG} MODULE ${SMARTINVERTCONFIG_SRCS})
 
 target_link_libraries(${SMARTINVERTCONFIG}
     Qt5::Core
@@ -210,13 +207,11 @@ target_link_libraries(${SMARTINVERTCONFIG}
     KF5::XmlGui
 )
 
-kcoreaddons_desktop_to_json(${SMARTINVERTCONFIG}  smartInvertConfig.desktop SERVICE_TYPES kcmodule.desktop)
+kcoreaddons_desktop_to_json(${SMARTINVERTCONFIG} smartInvertConfig.desktop SERVICE_TYPES kcmodule.desktop)
 
 install(
     TARGETS
         ${SMARTINVERTCONFIG}
     DESTINATION
-    ${MODULEPATH}/kwin/effects/configs
+        ${MODULEPATH}/kwin/effects/configs
 )
-
-

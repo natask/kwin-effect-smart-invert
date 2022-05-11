@@ -1,5 +1,5 @@
 #include "invert.h"
 KWIN_EFFECT_FACTORY_ENABLED(KWin::InvertEffect,
-                            "smartInvert.json",
-                            return false;)
+                            "metadata.json",
+                            return KWin::InvertEffect::supported();)
 #include "plugin.moc"
