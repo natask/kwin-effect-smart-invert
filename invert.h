@@ -46,7 +46,7 @@ public:
     void paintEffectFrame(KWin::EffectFrame* frame, const QRegion &region, double opacity, double frameOpacity) override;
     bool isActive() const override;
     bool provides(Feature) override;
-    QString getWindowApplicationName(EffectWindow * w);
+    bool isWindowInBlocklist(EffectWindow * w);
 
     int requestedEffectChainPosition() const override;
 

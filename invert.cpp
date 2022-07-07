@@ -143,9 +143,14 @@ namespace KWin
     return shader;
   }
 
-  QString InvertEffect::getWindowApplicationName(EffectWindow * w) {
-    auto windowClass = w->windowClass();
-    return windowClass.split(" ")[1].toLower();
+  bool InvertEffect::isWindowInBlocklist(EffectWindow * w) {
+    auto windowClass = w->windowClass().toLower();
+    for (auto&& blockedWindow: m_blocklist){
+      if(windowClass.contains(blockedWindow)){
+        return true;
+      }
+    }
+    return false;
   }
 
   void InvertEffect::drawWindow(EffectWindow* w, int mask, const QRegion &region, WindowPaintData& data)
@@ -154,7 +159,7 @@ namespace KWin
     if (m_valid && !m_inited)
       m_valid = loadData();
 
-    bool useShader = m_valid && (m_allWindows != m_windows.contains(w)) && !m_blocklist.contains(getWindowApplicationName(w));
+    bool useShader = m_valid && (m_allWindows != m_windows.contains(w)) && !isWindowInBlocklist(w);
     auto shader = m_windows_shader.value(w, m_shader);
 
     if (useShader) {
