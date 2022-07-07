@@ -29,7 +29,8 @@ Or directly from the kwin effects settings menu.
   + window classes added to blocklist in kde system settings effect configuration are not inverted.
   + Use `xprop WM_CLASS` or `wmctrl -lx` and take the second string to get window class. For example =xprop WM_ClASS= returns =M_CLASS(STRING) = "systemsettings5", "systemsettings"= for a system settings window. Take the second string, ="systemsettings"= and place in blocklist.
   + Case insensitive.
-  + Separate window classes with comma. E.g: =discord,emacs=.
+  + If class has space, insert it with its spaces verbatum. E.g: =first class,second,name with space,last=
+  + Separate window classes with comma. E.g: =discord,code - insider,emacs,=.
 ** Dependencies
 I haven't tested these dependencies. refer to [[https://github.com/ugjka/kwin-,ileffect-grayscale][this]] and [[https://github.com/alex47/KDE-Rounded-Corners][this]] repos.
 - Arch based ::
