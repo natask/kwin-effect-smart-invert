@@ -101,7 +101,7 @@ namespace KWin
     if (file.open(QFile::ReadOnly))
     {
       QByteArray frag = file.readAll();
-      m_shader = KWin::ShaderManager::instance()->generateCustomShader(KWin::ShaderTrait::MapTexture, QByteArray(), frag);
+      m_shader = KWin::ShaderManager::instance()->generateCustomShader(KWin::ShaderTrait::MapTexture, QByteArray(), frag).release();
       file.close();
 
       if (!m_shader->isValid()) {
@@ -138,7 +138,7 @@ namespace KWin
     if (file.open(QFile::ReadOnly))
     {
       QByteArray frag = file.readAll();
-      shader = KWin::ShaderManager::instance()->generateCustomShader(KWin::ShaderTrait::MapTexture, QByteArray(), frag);
+      shader = KWin::ShaderManager::instance()->generateCustomShader(KWin::ShaderTrait::MapTexture, QByteArray(), frag).release();
       file.close();}
     return shader;
   }
